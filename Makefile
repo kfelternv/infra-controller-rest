@@ -209,13 +209,13 @@ build:
 	cd site-agent && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-extldflags '-static'" -o ../$(BUILD_DIR)/site-agent ./cmd/site-agent
 	cd db && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-extldflags '-static'" -o ../$(BUILD_DIR)/migrations ./cmd/migrations
 	cd cert-manager && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-extldflags '-static'" -o ../$(BUILD_DIR)/credsmgr ./cmd/credsmgr
-	cd cli && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-extldflags '-static'" -o ../$(BUILD_DIR)/nicocli ./cmd/cli
+	cd cli && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-extldflags '-static'" -o ../$(BUILD_DIR)/nico ./cmd/cli
 
 INSTALL_DIR ?= $(shell go env GOPATH)/bin
 
 nico-cli:
-	go build -o $(INSTALL_DIR)/nicocli ./cli/cmd/cli
-	@echo "Installed nicocli to $(INSTALL_DIR)/nicocli"
+	go build -o $(INSTALL_DIR)/nico ./cli/cmd/cli
+	@echo "Installed nico to $(INSTALL_DIR)/nico"
 
 docker-build:
 	docker build -t $(IMAGE_REGISTRY)/nico-rest-api:$(IMAGE_TAG) -f $(DOCKERFILE_DIR)/Dockerfile.nico-rest-api .

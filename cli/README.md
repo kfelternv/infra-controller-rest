@@ -20,7 +20,7 @@ Command-line client for the NVIDIA Infrastructure Controller (NICo) REST API. Co
 make nico-cli
 ```
 
-This builds and installs `nicocli` to `$(go env GOPATH)/bin/nicocli`. Override the destination with:
+This builds and installs `nico` to `$(go env GOPATH)/bin/nico`. Override the destination with:
 
 ```bash
 make nico-cli INSTALL_DIR=/usr/local/bin
@@ -35,13 +35,13 @@ go install ./cli/cmd/cli
 ### Manual go build
 
 ```bash
-go build -o /usr/local/bin/nicocli ./cli/cmd/cli
+go build -o /usr/local/bin/nico ./cli/cmd/cli
 ```
 
 ### Verify
 
 ```bash
-nicocli --version
+nico --version
 ```
 
 ## Quick Start
@@ -49,7 +49,7 @@ nicocli --version
 Generate a default config and add configs for each environment you work with:
 
 ```bash
-nicocli init                    # writes ~/.nico/config.yaml
+nico init                    # writes ~/.nico/config.yaml
 cp ~/.nico/config.yaml ~/.nico/config.staging.yaml
 cp ~/.nico/config.yaml ~/.nico/config.prod.yaml
 ```
@@ -57,16 +57,16 @@ cp ~/.nico/config.yaml ~/.nico/config.prod.yaml
 Edit each file with the appropriate server URL, org, and auth settings for that environment (see Configuration below), then launch interactive mode:
 
 ```bash
-nicocli tui
+nico tui
 ```
 
-The TUI will list your configs, let you pick an environment, authenticate, and start running commands. This is the recommended way to use `nicocli` since it handles environment selection, login, and token refresh automatically.
+The TUI will list your configs, let you pick an environment, authenticate, and start running commands. This is the recommended way to use `nico` since it handles environment selection, login, and token refresh automatically.
 
 For direct one-off commands without the TUI:
 
 ```bash
-nicocli login                   # exchange credentials for a token
-nicocli site list               # list all sites
+nico login                   # exchange credentials for a token
+nico site list               # list all sites
 ```
 
 ## Configuration
@@ -112,16 +112,16 @@ Flags and environment variables override config values:
 
 ```bash
 # OIDC (credentials from config, prompts for password if not stored)
-nicocli login
+nico login
 
 # OIDC with explicit flags
-nicocli --token-url https://auth.example.com/token login --username admin@example.com
+nico --token-url https://auth.example.com/token login --username admin@example.com
 
 # NGC API key
-nicocli login --api-key nvapi-xxxx
+nico login --api-key nvapi-xxxx
 
 # Keycloak shorthand
-nicocli --keycloak-url http://localhost:8080 login --username admin@example.com
+nico --keycloak-url http://localhost:8080 login --username admin@example.com
 ```
 
 Tokens are saved to `~/.nico/config.yaml` with auto-refresh for OIDC.
@@ -129,17 +129,17 @@ Tokens are saved to `~/.nico/config.yaml` with auto-refresh for OIDC.
 ## Usage
 
 ```bash
-nicocli site list
-nicocli site get <siteId>
-nicocli site create --name "SJC4"
-nicocli site create --data-file site.json
-cat site.json | nicocli site create --data-file -
-nicocli site delete <siteId>
-nicocli instance list --status provisioned --page-size 20
-nicocli instance list --all                # fetch all pages
-nicocli allocation constraint create <allocationId> --constraint-type SITE
-nicocli site list --output table
-nicocli --debug site list
+nico site list
+nico site get <siteId>
+nico site create --name "SJC4"
+nico site create --data-file site.json
+cat site.json | nico site create --data-file -
+nico site delete <siteId>
+nico instance list --status provisioned --page-size 20
+nico instance list --all                # fetch all pages
+nico allocation constraint create <allocationId> --constraint-type SITE
+nico site list --output table
+nico --debug site list
 ```
 
 ## Command Structure
@@ -160,22 +160,22 @@ Commands follow `cli <resource> [sub-resource] <action> [args] [flags]`.
 Nested API paths appear as sub-resource groups:
 
 ```
-nicocli allocation list
-nicocli allocation constraint list
-nicocli allocation constraint create <allocationId>
+nico allocation list
+nico allocation constraint list
+nico allocation constraint create <allocationId>
 ```
 
 ## Shell Completion
 
 ```bash
 # Bash
-eval "$(nicocli completion bash)"
+eval "$(nico completion bash)"
 
 # Zsh
-eval "$(nicocli completion zsh)"
+eval "$(nico completion zsh)"
 
 # Fish
-nicocli completion fish > ~/.config/fish/completions/nicocli.fish
+nico completion fish > ~/.config/fish/completions/nico.fish
 ```
 
 ## Multi-Environment Configs
@@ -193,7 +193,7 @@ The TUI automatically discovers all `config*.yaml` files in `~/.nico/` and prese
 For direct commands, select an environment with `--config`:
 
 ```bash
-nicocli --config ~/.nico/config.staging.yaml site list
+nico --config ~/.nico/config.staging.yaml site list
 ```
 
 ## Interactive TUI Mode
@@ -201,24 +201,24 @@ nicocli --config ~/.nico/config.staging.yaml site list
 The TUI is the recommended way to interact with the API. It handles config selection, authentication, and token refresh in one session:
 
 ```bash
-nicocli tui
+nico tui
 ```
 
 You can also launch it with the `i` alias:
 
 ```bash
-nicocli i
+nico i
 ```
 
 To skip the config selector and connect to a specific environment directly:
 
 ```bash
-nicocli --config ~/.nico/config.prod.yaml tui
+nico --config ~/.nico/config.prod.yaml tui
 ```
 
 ## Troubleshooting
 
-If `nicocli` is not found after install, make sure `$(go env GOPATH)/bin` is in your PATH:
+If `nico` is not found after install, make sure `$(go env GOPATH)/bin` is in your PATH:
 
 ```bash
 export PATH="$(go env GOPATH)/bin:$PATH"
@@ -227,5 +227,5 @@ export PATH="$(go env GOPATH)/bin:$PATH"
 Use `--debug` on any command to see the full HTTP request and response for diagnosing issues:
 
 ```bash
-nicocli --debug site list
+nico --debug site list
 ```

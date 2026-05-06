@@ -41,7 +41,7 @@ func NewApp(specData []byte) (*cli.App, error) {
 	commands = append(commands, completionCommand())
 
 	app := &cli.App{
-		Name:                 "nicocli",
+		Name:                 "nico",
 		Usage:                spec.Info.Title,
 		Version:              spec.Info.Version,
 		EnableBashCompletion: true,
@@ -143,9 +143,9 @@ func completionCommand() *cli.Command {
 	}
 }
 
-const bashCompletion = `# bash completion for nicocli
-# Add to ~/.bashrc:  eval "$(nicocli completion bash)"
-_nicocli_complete() {
+const bashCompletion = `# bash completion for nico
+# Add to ~/.bashrc:  eval "$(nico completion bash)"
+_nico_complete() {
     local cur opts
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
@@ -153,21 +153,21 @@ _nicocli_complete() {
     COMPREPLY=($(compgen -W "${opts}" -- "${cur}"))
     return 0
 }
-complete -o default -F _nicocli_complete nicocli
+complete -o default -F _nico_complete nico
 `
 
-const zshCompletion = `# zsh completion for nicocli
-# Add to ~/.zshrc:  eval "$(nicocli completion zsh)"
-_nicocli_complete() {
+const zshCompletion = `# zsh completion for nico
+# Add to ~/.zshrc:  eval "$(nico completion zsh)"
+_nico_complete() {
     local -a opts
     opts=(${(f)"$(${words[1]} --generate-bash-completion ${words:1:$CURRENT-1})"})
-    _describe 'nicocli' opts
+    _describe 'nico' opts
 }
-compdef _nicocli_complete nicocli
+compdef _nico_complete nico
 `
 
-const fishCompletion = `# fish completion for nicocli
-# Add to ~/.config/fish/completions/nicocli.fish or run:
-#   nicocli completion fish > ~/.config/fish/completions/nicocli.fish
-complete -c nicocli -f -a '(nicocli --generate-bash-completion (commandline -cop))'
+const fishCompletion = `# fish completion for nico
+# Add to ~/.config/fish/completions/nico.fish or run:
+#   nico completion fish > ~/.config/fish/completions/nico.fish
+complete -c nico -f -a '(nico --generate-bash-completion (commandline -cop))'
 `
