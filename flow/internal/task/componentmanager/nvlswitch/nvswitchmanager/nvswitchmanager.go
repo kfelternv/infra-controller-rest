@@ -63,9 +63,14 @@ func Factory(providerRegistry *providerapi.ProviderRegistry) (componentmanager.C
 	return New(provider.Client()), nil
 }
 
-// Register registers the NV-Switch Manager NVLSwitch manager factory with the given registry.
-func Register(registry *componentmanager.Registry) {
-	registry.RegisterFactory(devicetypes.ComponentTypeNVLSwitch, ImplementationName, Factory)
+// Descriptor returns the NV-Switch Manager NVLSwitch manager descriptor.
+func Descriptor() componentmanager.Descriptor {
+	return componentmanager.Descriptor{
+		Type:              devicetypes.ComponentTypeNVLSwitch,
+		Implementation:    ImplementationName,
+		RequiredProviders: []string{nsmprovider.ProviderName},
+		Factory:           Factory,
+	}
 }
 
 // Type returns the component type this manager handles.
@@ -124,7 +129,7 @@ func (m *Manager) PowerControl(
 	return nil
 }
 
-// mapPowerOperation maps RLA's PowerOperation to NV-Switch Manager's PowerAction.
+// mapPowerOperation maps Flow's PowerOperation to NV-Switch Manager's PowerAction.
 func mapPowerOperation(op operations.PowerOperation) (nsmapi.PowerAction, error) {
 	switch op {
 	case operations.PowerOperationPowerOn:
